@@ -21,12 +21,12 @@ const MovieCard = (props: Props) => {
     <Card key={props.id}>
       <CardContent
         className={cn(
-          "flex flex-col aspect-[3/4] items-center justify-center gap-3 relative",
+          "flex flex-col items-center justify-center gap-3 relative",
           props.gridDisplay && "p-0 pb-2"
         )}
       >
         <Image
-          className={cn(props.gridDisplay && "rounded-t-xl")}
+          className={cn("object-contain", props.gridDisplay && "rounded-t-xl")}
           src={
             props.poster_path
               ? `https://image.tmdb.org/t/p/w500/${props.poster_path}`

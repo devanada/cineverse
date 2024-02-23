@@ -11,3 +11,7 @@ export interface PaginationData<TData> {
   total_pages: number;
   total_results: number;
 }
+
+export interface Params {
+  [key: string]: string | string[] | undefined;
+}
