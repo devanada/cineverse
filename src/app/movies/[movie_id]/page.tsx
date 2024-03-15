@@ -14,15 +14,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CarouselItem } from "@/components/ui/carousel";
 import { badgeVariants } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import MovieCard from "@/components/movie-card";
 import Carousel from "@/components/carousel";
 import Heading from "@/components/heading";
-import WatchlistBtn from "./watchlist-btn";
+import ActionBtn from "./action-btn";
 
 import { getDetailMovie } from "@/utils/actions/movies";
 import { postWatchlistMovie, postFavoriteMovie } from "@/utils/actions/user";
-import FavoriteBtn from "./favorite-btn";
 
 interface Props {
   params: { movie_id: string };
@@ -113,8 +111,12 @@ export default async function Page({ params }: Props) {
             height={500}
             priority
           />
-          <WatchlistBtn actionFn={handleWatchlist} />
-          <FavoriteBtn actionFn={handleFavorite} />
+          <ActionBtn
+            actionFn={handleWatchlist}
+            label="Add to watchlist"
+            variant="secondary"
+          />
+          <ActionBtn actionFn={handleFavorite} label="Add to favorite" />
         </div>
         <div className="flex flex-col w-full md:w-2/3 lg:w-4/5">
           <ul className="[&>*]:flex [&>*]:gap-3 [&_span]:font-bold flex flex-col gap-3">
@@ -297,7 +299,7 @@ export default async function Page({ params }: Props) {
       </div>
       <Heading title="More Like This" />
       <Carousel>
-        {detail.similar.results.map((movie) => (
+        {detail.similar?.results.map((movie) => (
           <CarouselItem
             className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
             key={movie.id}

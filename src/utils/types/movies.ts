@@ -1,10 +1,10 @@
-import { PaginationData } from "./api";
+import { IPaginationData } from "./api";
 
-export interface Movie {
+export interface IMovie {
   adult: boolean;
   backdrop_path: string;
   budget: number;
-  genres: MovieGenre[];
+  genres: IMovieGenre[];
   homepage: string;
   id: number;
   imdb_id: string;
@@ -13,8 +13,8 @@ export interface Movie {
   overview: string;
   popularity: number;
   poster_path: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
+  production_companies: IProductionCompany[];
+  production_countries: IProductionCountry[];
   release_date: string;
   revenue: string;
   runtime: number;
@@ -25,7 +25,7 @@ export interface Movie {
   vote_average: number;
   vote_count: number;
   videos?: {
-    results: MovieVideo[];
+    results: IMovieVideo[];
   };
   reviews?: {
     page: number;
@@ -37,27 +37,27 @@ export interface Movie {
     cast: ICast[];
     crew: ICrew[];
   };
-  similar: PaginationData<IOtherMovie[]>;
+  similar?: IPaginationData<IOtherMovie[]>;
 }
 
-interface MovieGenre {
+interface IMovieGenre {
   id: number;
   name: string;
 }
 
-interface ProductionCompany {
+interface IProductionCompany {
   id: number;
   logo_path: string;
   name: string;
   origin_country: string;
 }
 
-interface ProductionCountry {
+interface IProductionCountry {
   iso_3166_1: string;
   name: string;
 }
 
-export interface MovieVideo {
+export interface IMovieVideo {
   id: string;
   iso_639_1: string;
   iso_3166_1: string;
@@ -70,7 +70,7 @@ export interface MovieVideo {
   type: string;
 }
 
-export interface FavoritePayload {
+export interface IFavoritePayload {
   media_type: string;
   media_id: number;
   favorite: boolean;

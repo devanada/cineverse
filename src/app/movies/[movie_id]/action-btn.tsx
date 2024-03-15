@@ -10,13 +10,22 @@ interface Props {
   actionFn: (state: {
     message: string;
   }) => { message: string } | Promise<{ message: string }>;
+  label: string;
+  variant?:
+    | "link"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | null;
 }
 
 const initialState = {
   message: "",
 };
 
-export default function FavoriteBtn(props: Props) {
+export default function ActionBtn(props: Props) {
   const [state, formAction] = useFormState(props.actionFn, initialState);
 
   useEffect(() => {
@@ -27,8 +36,8 @@ export default function FavoriteBtn(props: Props) {
 
   return (
     <form className="w-full" action={formAction}>
-      <Button className="w-full" variant="default">
-        Add to favorite
+      <Button className="w-full" variant={props.variant}>
+        {props.label}
       </Button>
     </form>
   );

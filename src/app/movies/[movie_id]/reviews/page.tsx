@@ -1,20 +1,17 @@
 import { join, map, words, head } from "lodash";
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import dayjs from "dayjs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Pagination from "@/components/pagination";
 
-import { getDetailMovie } from "@/utils/actions/movies";
-import { Params, Response } from "@/utils/types/api";
-import { IReview } from "@/utils/types/movies";
+import { getDetailMovie, getMovieReviews } from "@/utils/actions/movies";
+import { IParams } from "@/utils/types/api";
 
 interface Props {
   params: { movie_id: string };
-  searchParams: Params;
+  searchParams: IParams;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -25,28 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "YYYY"
     )}) - CineVerse`,
   };
-}
-
-async function getMovieReviews(movie_id: string, params: Params) {
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movie_id}/reviews?language=en-US`,
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTY3ZDAyNWNhMGI3NzE2NTcwOTg0MTcwOTY5ZTg4ZiIsInN1YiI6IjYyY2UzMDFjNGRjMzRhMDA0ZTM5NDMyMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GFxoj8wdfWn0QHVYxVfcn47_4-QJ2BjC2bQ7U0wR-BI",
-        },
-      }
-    );
-
-    const result = await response.json();
-
-    return result as Response<IReview[]>;
-  } catch (error) {
-    throw new Error("Failed to fetch data");
-  }
 }
 
 export default async function Page({ params, searchParams }: Props) {

@@ -3,88 +3,12 @@ import MovieCard from "@/components/movie-card";
 import Carousel from "@/components/carousel";
 import Heading from "@/components/heading";
 
-import { Response } from "@/utils/types/api";
-import { Movie } from "@/utils/types/movies";
-
-async function getPopularMovies() {
-  try {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTY3ZDAyNWNhMGI3NzE2NTcwOTg0MTcwOTY5ZTg4ZiIsInN1YiI6IjYyY2UzMDFjNGRjMzRhMDA0ZTM5NDMyMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GFxoj8wdfWn0QHVYxVfcn47_4-QJ2BjC2bQ7U0wR-BI",
-        },
-      }
-    );
-    const result = await response.json();
-    return result as Response<Movie[]>;
-  } catch (error) {
-    throw new Error("Failed to fetch data");
-  }
-}
-
-async function getNowPlaying() {
-  try {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTY3ZDAyNWNhMGI3NzE2NTcwOTg0MTcwOTY5ZTg4ZiIsInN1YiI6IjYyY2UzMDFjNGRjMzRhMDA0ZTM5NDMyMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GFxoj8wdfWn0QHVYxVfcn47_4-QJ2BjC2bQ7U0wR-BI",
-        },
-      }
-    );
-    const result = await response.json();
-    return result as Response<Movie[]>;
-  } catch (error) {
-    throw new Error("Failed to fetch data");
-  }
-}
-
-async function getTopRated() {
-  try {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTY3ZDAyNWNhMGI3NzE2NTcwOTg0MTcwOTY5ZTg4ZiIsInN1YiI6IjYyY2UzMDFjNGRjMzRhMDA0ZTM5NDMyMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GFxoj8wdfWn0QHVYxVfcn47_4-QJ2BjC2bQ7U0wR-BI",
-        },
-      }
-    );
-    const result = await response.json();
-    return result as Response<Movie[]>;
-  } catch (error) {
-    throw new Error("Failed to fetch data");
-  }
-}
-
-async function getUpcoming() {
-  try {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTY3ZDAyNWNhMGI3NzE2NTcwOTg0MTcwOTY5ZTg4ZiIsInN1YiI6IjYyY2UzMDFjNGRjMzRhMDA0ZTM5NDMyMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GFxoj8wdfWn0QHVYxVfcn47_4-QJ2BjC2bQ7U0wR-BI",
-        },
-      }
-    );
-    const result = await response.json();
-    return result as Response<Movie[]>;
-  } catch (error) {
-    throw new Error("Failed to fetch data");
-  }
-}
+import {
+  getPopularMovies,
+  getNowPlaying,
+  getTopRated,
+  getUpcoming,
+} from "@/utils/actions/movies";
 
 export default async function Page() {
   const popular = await getPopularMovies();

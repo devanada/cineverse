@@ -3,15 +3,15 @@ import { Metadata } from "next";
 import Pagination from "@/components/pagination";
 import MovieCard from "@/components/movie-card";
 
-import { Params } from "@/utils/types/api";
+import { IParams } from "@/utils/types/api";
 import { getWatchlistMovies } from "@/utils/actions/user";
 
 interface Props {
-  searchParams: Params;
+  searchParams: IParams;
 }
 
 export const metadata: Metadata = {
-  title: "My Favorite - CineVerse",
+  title: "My Watchlist - CineVerse",
 };
 
 export default async function Page({ searchParams }: Props) {

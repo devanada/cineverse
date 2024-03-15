@@ -1,7 +1,7 @@
 "use client";
 
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 import {
   Card,
@@ -12,11 +12,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { onSubmitLogin } from "@/utils/actions/auth";
-import { SubmitButton } from "./submit-btn";
 
 const initialState = {
   message: "",
@@ -24,6 +24,7 @@ const initialState = {
 
 export default function Form() {
   const [state, formAction] = useFormState(onSubmitLogin, initialState);
+  const { pending } = useFormStatus();
 
   return (
     <Card className="w-full md:w-3/4 lg:w-1/2">
@@ -54,7 +55,14 @@ export default function Form() {
               required
             />
           </div>
-          <SubmitButton />
+          <Button
+            size="lg"
+            type="submit"
+            disabled={pending}
+            aria-disabled={pending}
+          >
+            Login
+          </Button>
         </form>
       </CardContent>
       {state.message.length !== 0 ? (

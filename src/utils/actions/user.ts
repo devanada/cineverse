@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 
-import { Params, Response } from "@/utils/types/api";
-import { Movie } from "@/utils/types/movies";
+import { IParams, IResponse } from "@/utils/types/api";
+import { IMovie } from "@/utils/types/movies";
 import { buildQueryString } from "@/utils/formatter";
 
-export async function getFavoriteMovies(params: Params) {
+export async function getFavoriteMovies(params: IParams) {
   const cookieStore = cookies();
   const userID = cookieStore.get("userID");
 
@@ -25,13 +25,13 @@ export async function getFavoriteMovies(params: Params) {
 
     const result = await response.json();
 
-    return result as Response<Movie[]>;
+    return result as IResponse<IMovie[]>;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
 }
 
-export async function getFavoriteTv(params: Params) {
+export async function getFavoriteTv(params: IParams) {
   const cookieStore = cookies();
   const userID = cookieStore.get("userID");
 
@@ -52,13 +52,13 @@ export async function getFavoriteTv(params: Params) {
 
     const result = await response.json();
 
-    return result as Response<Movie[]>;
+    return result as IResponse<IMovie[]>;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
 }
 
-export async function getWatchlistMovies(params: Params) {
+export async function getWatchlistMovies(params: IParams) {
   const cookieStore = cookies();
   const userID = cookieStore.get("userID");
 
@@ -79,13 +79,13 @@ export async function getWatchlistMovies(params: Params) {
 
     const result = await response.json();
 
-    return result as Response<Movie[]>;
+    return result as IResponse<IMovie[]>;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
 }
 
-export async function getWatchlistTv(params: Params) {
+export async function getWatchlistTv(params: IParams) {
   const cookieStore = cookies();
   const userID = cookieStore.get("userID");
 
@@ -106,7 +106,7 @@ export async function getWatchlistTv(params: Params) {
 
     const result = await response.json();
 
-    return result as Response<Movie[]>;
+    return result as IResponse<IMovie[]>;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
