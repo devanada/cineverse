@@ -1,4 +1,4 @@
-import { Params } from "./types/api";
+import { IParams } from "./types/api";
 
 export const generatePagesToDisplay = (
   currentPage: number,
@@ -35,7 +35,7 @@ export const generatePagesToDisplay = (
   return pagesToDisplay;
 };
 
-export const buildQueryString = (params?: Params): string => {
+export const buildQueryString = (params?: IParams): string => {
   if (!params) {
     return "";
   }

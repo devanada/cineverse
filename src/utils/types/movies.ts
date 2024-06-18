@@ -38,6 +38,11 @@ export interface IMovie {
     crew: ICrew[];
   };
   similar?: IPaginationData<IOtherMovie[]>;
+  account_states?: {
+    favorite: boolean;
+    rated: boolean;
+    watchlist: boolean;
+  };
 }
 
 interface IMovieGenre {
@@ -135,4 +140,13 @@ export interface IOtherMovie {
   video: string;
   vote_average: string;
   vote_count: string;
+}
+
+export interface IAccountStates {
+  id: number;
+  favorite: boolean;
+  watchlist: boolean;
+  rated: {
+    value: number;
+  };
 }

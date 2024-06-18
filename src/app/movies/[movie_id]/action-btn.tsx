@@ -1,16 +1,16 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import { useEffect } from "react";
-import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
 
+import { FormActionResult, useFormAction } from "@/utils/hooks/use-form-action";
+
 interface Props {
-  actionFn: (state: {
-    message: string;
-  }) => { message: string } | Promise<{ message: string }>;
+  actionFn: (
+    prevState: FormActionResult,
+    formData: FormData
+  ) => Promise<FormActionResult>;
   label: string;
+  inputValue: string;
   variant?:
     | "link"
     | "default"
@@ -21,22 +21,13 @@ interface Props {
     | null;
 }
 
-const initialState = {
-  message: "",
-};
-
 export default function ActionBtn(props: Props) {
-  const [state, formAction] = useFormState(props.actionFn, initialState);
-
-  useEffect(() => {
-    if (state.message.length !== 0) {
-      toast(state.message);
-    }
-  }, [state]);
+  const [errorMsg, formAction] = useFormAction(props.actionFn);
 
   return (
     <form className="w-full" action={formAction}>
-      <Button className="w-full" variant={props.variant}>
+      <input type="hidden" name="media_id" value={props.inputValue} />
+      <Button className="w-full" variant={props.variant} type="submit">
         {props.label}
       </Button>
     </form>

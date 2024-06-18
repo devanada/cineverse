@@ -4,7 +4,7 @@ import Pagination from "@/components/pagination";
 import MovieCard from "@/components/movie-card";
 
 import { IParams } from "@/utils/types/api";
-import { getWatchlistMovies } from "@/utils/actions/user";
+import { getWatchlistMovies } from "@/utils/apis/user";
 
 interface Props {
   searchParams: IParams;

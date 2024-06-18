@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Pagination from "@/components/pagination";
 
-import { getDetailMovie, getMovieReviews } from "@/utils/actions/movies";
+import { getDetailMovie, getMovieReviews } from "@/utils/apis/movies";
 import { IParams } from "@/utils/types/api";
 
 interface Props {

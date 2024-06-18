@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/pagination";
 
 import { buildQueryString, generatePagesToDisplay } from "@/utils/formatter";
-import { Params } from "@/utils/types/api";
+import { IParams } from "@/utils/types/api";
 
 interface Props {
-  page?: number;
-  total_pages?: number;
-  query?: Params;
+  page: number;
+  total_pages: number;
+  query?: IParams;
 }
 
 const Pagination = (props: Props) => {
@@ -29,7 +29,7 @@ const Pagination = (props: Props) => {
     <PaginationUI>
       <PaginationContent>
         <PaginationPrevious
-          href={page === 1 ? undefined : `${params}&page=${page! - 1}`}
+          href={page === 1 ? undefined : `?${params}&page=${page! - 1}`}
         />
         {generatePagesToDisplay(page!, total!).map((value, index) => {
           if (value === "...") {
@@ -39,7 +39,7 @@ const Pagination = (props: Props) => {
           return (
             <PaginationLink
               key={`${page}-${index}`}
-              href={page === value ? undefined : `${params}&page=${value}`}
+              href={page === value ? undefined : `?${params}&page=${value}`}
               isActive={page === value}
             >
               {value}
@@ -50,7 +50,7 @@ const Pagination = (props: Props) => {
           href={
             page === total || total === 0
               ? undefined
-              : `${params}&page=${page! + 1}`
+              : `?${params}&page=${page! + 1}`
           }
         />
       </PaginationContent>

@@ -8,7 +8,7 @@ import {
   getNowPlaying,
   getTopRated,
   getUpcoming,
-} from "@/utils/actions/movies";
+} from "@/utils/apis/movies";
 
 export default async function Page() {
   const popular = await getPopularMovies();

@@ -19,8 +19,13 @@ import Carousel from "@/components/carousel";
 import Heading from "@/components/heading";
 import ActionBtn from "./action-btn";
 
-import { getDetailMovie } from "@/utils/actions/movies";
-import { postWatchlistMovie, postFavoriteMovie } from "@/utils/actions/user";
+import {
+  handleAddFavorite,
+  handleAddWatchlist,
+  handleRemoveFavorite,
+  handleRemoveWatchlist,
+} from "@/utils/actions/user";
+import { getDetailMovie } from "@/utils/apis/movies";
 
 interface Props {
   params: { movie_id: string };
@@ -38,42 +43,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const detail = await getDetailMovie(params.movie_id);
-
-  async function handleFavorite() {
-    "use server";
-
-    try {
-      const payload = {
-        media_type: "movie",
-        media_id: +params.movie_id,
-        favorite: true,
-      };
-
-      await postFavoriteMovie(payload);
-
-      return { message: "Success added to favorite" };
-    } catch (error) {
-      return { message: "Failed to add to favorite" };
-    }
-  }
-
-  async function handleWatchlist() {
-    "use server";
-
-    try {
-      const payload = {
-        media_type: "movie",
-        media_id: +params.movie_id,
-        watchlist: true,
-      };
-
-      await postWatchlistMovie(payload);
-
-      return { message: "Success added to watchlist" };
-    } catch (error) {
-      return { message: "Failed to add to watchlist" };
-    }
-  }
 
   return (
     <>
@@ -112,11 +81,38 @@ export default async function Page({ params }: Props) {
             priority
           />
           <ActionBtn
-            actionFn={handleWatchlist}
-            label="Add to watchlist"
+            actionFn={
+              detail.account_states?.watchlist
+                ? handleRemoveWatchlist
+                : handleAddWatchlist
+            }
+            inputValue={params.movie_id}
+            label={
+              detail.account_states?.watchlist
+                ? "Remove from watchlist"
+                : "Add to watchlist"
+            }
             variant="secondary"
           />
-          <ActionBtn actionFn={handleFavorite} label="Add to favorite" />
+          <ActionBtn
+            actionFn={
+              detail.account_states?.favorite
+                ? handleRemoveFavorite
+                : handleAddFavorite
+            }
+            inputValue={params.movie_id}
+            label={
+              detail.account_states?.favorite
+                ? "Remove from favorite"
+                : "Add to favorite"
+            }
+          />
+          <input
+            type="hidden"
+            name="media_id"
+            form="form-favorite"
+            value={params.movie_id}
+          />
         </div>
         <div className="flex flex-col w-full md:w-2/3 lg:w-4/5">
           <ul className="[&>*]:flex [&>*]:gap-3 [&_span]:font-bold flex flex-col gap-3">
@@ -293,7 +289,9 @@ export default async function Page({ params }: Props) {
                 </p>
               </div>
             </div>
-            <p className="text-justify tracking-wider">{review.content}</p>
+            <p className="text-justify tracking-wider line-clamp-3">
+              {review.content}
+            </p>
           </div>
         ))}
       </div>
