@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import Pagination from "@/components/pagination";
-import MovieCard from "@/components/movie-card";
+import { MovieCard } from "@/components/movie-card";
 
 import { IParams } from "@/utils/types/api";
 import { getWatchlistMovies } from "@/utils/apis/user";

@@ -9,15 +9,16 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   title: string;
-  poster_path: string;
-  overview: string;
-  id: number;
+  image: string;
+  href: string;
+  overview?: string;
   gridDisplay?: boolean;
+  vote_average?: number;
 }
 
 const MovieCard = (props: Props) => {
   return (
-    <Card key={props.id}>
+    <Card>
       <CardContent
         className={cn(
           "flex flex-col items-center justify-center gap-3 relative",
@@ -27,8 +28,8 @@ const MovieCard = (props: Props) => {
         <Image
           className={cn("object-contain", props.gridDisplay && "rounded-t-xl")}
           src={
-            props.poster_path
-              ? `https://image.tmdb.org/t/p/w500/${props.poster_path}`
+            props.image
+              ? `https://image.tmdb.org/t/p/w500/${props.image}`
               : "/movie_placeholder.png"
           }
           alt={props.title}
@@ -45,7 +46,7 @@ const MovieCard = (props: Props) => {
             })}
           </p>
           <Button asChild>
-            <Link href={`/movies/${props.id}`}>See more</Link>
+            <Link href={props.href}>See more</Link>
           </Button>
         </div>
       </CardContent>
@@ -53,4 +54,55 @@ const MovieCard = (props: Props) => {
   );
 };
 
-export default MovieCard;
+const MovieCardAlt = (props: Props) => {
+  return (
+    <div className="w-full h-full flex items-center gap-4">
+      <Image
+        className={cn("object-contain w-fit h-full")}
+        src={
+          props.image
+            ? `https://image.tmdb.org/t/p/w92/${props.image}`
+            : "/movie_placeholder.png"
+        }
+        alt={props.title}
+        width={92}
+        height={138}
+        priority
+      />
+      <div>
+        <Link href={props.href} className="text-lg font-semibold">
+          {props.title}
+        </Link>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>{props.vote_average}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AutoMovieCard = (props: Props) => {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-3 relative">
+      <Image
+        className={cn("object-cover object-top")}
+        src={
+          props.image
+            ? `https://image.tmdb.org/t/p/w1280/${props.image}`
+            : "/movie_placeholder.png"
+        }
+        alt={props.title}
+        fill={true}
+        priority
+      />
+      <div className="absolute w-full h-full bg-black/20 p-6 flex flex-col justify-end items-start gap-3">
+        <p className="font-semibold text-lg text-center">{props.title}</p>
+        <Button asChild>
+          <Link href={props.href}>See more</Link>
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export { MovieCard, MovieCardAlt, AutoMovieCard };

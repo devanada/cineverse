@@ -20,8 +20,9 @@ export async function handleAddFavorite(
 
   try {
     const media_id = +(formData.get("media_id") ?? 0);
+    const media_type = formData.get("media_type") as string;
     const payload = {
-      media_type: "movie",
+      media_type: media_type,
       media_id: media_id,
       favorite: true,
     };
@@ -54,8 +55,9 @@ export async function handleAddWatchlist(
 
   try {
     const media_id = +(formData.get("media_id") ?? 0);
+    const media_type = formData.get("media_type") as string;
     const payload = {
-      media_type: "movie",
+      media_type: media_type,
       media_id: media_id,
       watchlist: true,
     };
@@ -81,8 +83,9 @@ export async function handleRemoveFavorite(
 ): Promise<FormActionResult> {
   try {
     const media_id = +(formData.get("media_id") ?? 0);
+    const media_type = formData.get("media_type") as string;
     const payload = {
-      media_type: "movie",
+      media_type: media_type,
       media_id: media_id,
       favorite: false,
     };
@@ -108,8 +111,9 @@ export async function handleRemoveWatchlist(
 ): Promise<FormActionResult> {
   try {
     const media_id = +(formData.get("media_id") ?? 0);
+    const media_type = formData.get("media_type") as string;
     const payload = {
-      media_type: "movie",
+      media_type: media_type,
       media_id: media_id,
       watchlist: false,
     };

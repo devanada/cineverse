@@ -1,3 +1,7 @@
+"use client";
+
+import Autoplay from "embla-carousel-autoplay";
+
 import {
   Carousel as MainCarousel,
   CarouselContent,
@@ -7,18 +11,22 @@ import {
 
 interface Props {
   children: React.ReactNode;
+  orientation?: "horizontal" | "vertical";
 }
 
 const Carousel = (props: Props) => {
   return (
-    <div className="w-full relative flex justify-center">
+    <div className="w-full h-full relative flex justify-center">
       <MainCarousel
         opts={{
           align: "start",
         }}
-        className="w-full max-w-[80%] md:max-w-[90%] lg:max-w-[95%]"
+        className="w-full h-full max-w-[80%] md:max-w-[90%] lg:max-w-[95%]"
+        orientation={props.orientation}
       >
-        <CarouselContent>{props.children}</CarouselContent>
+        <CarouselContent className="w-full h-full ml-0">
+          {props.children}
+        </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
       </MainCarousel>
@@ -26,4 +34,26 @@ const Carousel = (props: Props) => {
   );
 };
 
-export default Carousel;
+const AutoCarousel = (props: Props) => {
+  return (
+    <div className="w-full h-full">
+      <MainCarousel
+        plugins={[
+          Autoplay({
+            delay: 10000,
+            stopOnInteraction: false,
+          }),
+        ]}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full h-full"
+      >
+        <CarouselContent className="ml-0">{props.children}</CarouselContent>
+      </MainCarousel>
+    </div>
+  );
+};
+
+export { Carousel, AutoCarousel };

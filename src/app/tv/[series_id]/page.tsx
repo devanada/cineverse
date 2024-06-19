@@ -25,40 +25,41 @@ import {
   handleRemoveFavorite,
   handleRemoveWatchlist,
 } from "@/utils/actions/user";
-import { getDetailMovie } from "@/utils/apis/movies";
+import { getDetailTV } from "@/utils/apis/tv";
 
 interface Props {
-  params: { movie_id: string };
+  params: { series_id: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const detail = await getDetailMovie(params.movie_id);
+  const detail = await getDetailTV(params.series_id);
 
   return {
-    title: `${detail.title} (${dayjs(detail.release_date).format(
+    title: `${detail.name} (${dayjs(detail.first_air_date).format(
       "YYYY"
     )}) - CineVerse`,
   };
 }
 
 export default async function Page({ params }: Props) {
-  const detail = await getDetailMovie(params.movie_id);
+  const detail = await getDetailTV(params.series_id);
 
   return (
     <>
       <div className="flex justify-between items-center mb-3">
         <div className="flex flex-col gap-1">
-          <p className="font-bold text-3xl tracking-widest">{detail.title}</p>
+          <p className="font-bold text-3xl tracking-widest">{detail.name}</p>
           <p className="text-sm tracking-wider">
-            {dayjs(detail.release_date).format("YYYY")} | {detail.runtime}{" "}
-            minutes | {detail.vote_average.toFixed(1)} ★ ({detail.vote_count})
+            {dayjs(detail.first_air_date).format("YYYY")} |{" "}
+            {detail.number_of_seasons} seasons | {detail.number_of_episodes}{" "}
+            episodes | {detail.vote_average.toFixed(1)} ★ ({detail.vote_count})
           </p>
           <div className="flex gap-3">
             {detail.genres.map((genre) => (
               <Link
                 className={badgeVariants({ variant: "outline" })}
                 key={genre.id}
-                href={`/movies?with_genres=${genre.id}`}
+                href={`/tv?with_genres=${genre.id}`}
               >
                 {genre.name}
               </Link>
@@ -75,7 +76,7 @@ export default async function Page({ params }: Props) {
                 ? `https://image.tmdb.org/t/p/w500/${detail.poster_path}`
                 : "/movie_placeholder.png"
             }
-            alt={detail.title}
+            alt={detail.name}
             width={250}
             height={500}
             priority
@@ -86,7 +87,7 @@ export default async function Page({ params }: Props) {
                 ? handleRemoveWatchlist
                 : handleAddWatchlist
             }
-            inputValue={params.movie_id}
+            inputValue={params.series_id}
             label={
               detail.account_states?.watchlist
                 ? "Remove from watchlist"
@@ -100,7 +101,7 @@ export default async function Page({ params }: Props) {
                 ? handleRemoveFavorite
                 : handleAddFavorite
             }
-            inputValue={params.movie_id}
+            inputValue={params.series_id}
             label={
               detail.account_states?.favorite
                 ? "Remove from favorite"
@@ -111,7 +112,7 @@ export default async function Page({ params }: Props) {
             type="hidden"
             name="media_id"
             form="form-favorite"
-            value={params.movie_id}
+            value={params.series_id}
           />
         </div>
         <div className="flex flex-col w-full md:w-2/3 lg:w-4/5">
@@ -121,55 +122,40 @@ export default async function Page({ params }: Props) {
               <p>{detail.overview}</p>
             </li>
             <li>
-              <span>Release Date</span>
-              <p>{dayjs(detail.release_date).format("DD MMMM YYYY")}</p>
+              <span>Tagline</span>
+              <p>{detail.tagline ? detail.tagline : "-"}</p>
             </li>
             <li>
-              <span>Directing</span>
-              <Link
-                className={badgeVariants({ variant: "outline" })}
-                href={`/movies?with_crew=${
-                  detail.credits?.crew.find(
-                    (crew) => crew.department === "Directing"
-                  )?.id
-                }`}
-              >
-                {
-                  detail.credits?.crew.find(
-                    (crew) => crew.department === "Directing"
-                  )?.name
-                }
-              </Link>
+              <span>First Air Date</span>
+              <p>{dayjs(detail.first_air_date).format("DD MMMM YYYY")}</p>
             </li>
             <li>
-              <span>Budget</span>
-              <p>
-                {detail.budget.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </p>
+              <span>Last Air Date</span>
+              <p>{dayjs(detail.last_air_date).format("DD MMMM YYYY")}</p>
             </li>
             <li>
-              <span>Revenue</span>
-              <p>
-                {parseInt(detail.revenue).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </p>
+              <span>Creator</span>
+              <div className="flex flex-wrap gap-3">
+                {detail.created_by?.map((creator) => (
+                  <p
+                    className={badgeVariants({ variant: "outline" })}
+                    key={creator.id}
+                  >
+                    {creator.name}
+                  </p>
+                ))}
+              </div>
             </li>
             <li>
               <span>Stars</span>
               <div className="flex flex-wrap gap-3">
                 {detail.credits?.cast.slice(0, 3).map((cast) => (
-                  <Link
+                  <p
                     className={badgeVariants({ variant: "outline" })}
                     key={cast.id}
-                    href={`/movies?with_cast=${cast.id}`}
                   >
                     {cast.name}
-                  </Link>
+                  </p>
                 ))}
               </div>
             </li>
@@ -199,12 +185,7 @@ export default async function Page({ params }: Props) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
-                  <Link
-                    className="font-bold hover:underline"
-                    href={`/movies?with_cast=${cast.id}`}
-                  >
-                    {cast.name}
-                  </Link>
+                  <p className="font-bold">{cast.name}</p>
                   <p className="text-muted-foreground">{cast.character}</p>
                 </div>
               </div>
@@ -233,12 +214,7 @@ export default async function Page({ params }: Props) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
-                  <Link
-                    className="font-bold hover:underline"
-                    href={`/movies?with_crew=${crew.id}`}
-                  >
-                    {crew.name}
-                  </Link>
+                  <p className="font-bold">{crew.name}</p>
                   <p className="text-muted-foreground">{crew.department}</p>
                 </div>
               </div>
@@ -264,7 +240,7 @@ export default async function Page({ params }: Props) {
       <Heading
         title="User Reviews"
         showSeeMore
-        navigate={`/movies/${params.movie_id}/reviews`}
+        navigate={`/tv/${params.series_id}/reviews`}
       />
       <div className="flex flex-col gap-3">
         {detail.reviews?.results.slice(0, 3).map((review) => (
@@ -297,16 +273,16 @@ export default async function Page({ params }: Props) {
       </div>
       <Heading title="More Like This" />
       <Carousel>
-        {detail.similar?.results.map((movie) => (
+        {detail.similar?.results.map((show) => (
           <CarouselItem
             className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-            key={movie.id}
+            key={show.id}
           >
             <MovieCard
-              href={`/movies/${movie.id}`}
-              title={movie.title}
-              overview={movie.overview}
-              image={movie.poster_path}
+              href={`/tv/${show.id}`}
+              title={show.title}
+              overview={show.overview}
+              image={show.poster_path}
             />
           </CarouselItem>
         ))}

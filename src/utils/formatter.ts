@@ -51,3 +51,12 @@ export const buildQueryString = (params?: IParams): string => {
 
   return queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
 };
+
+export function separateIntoChunks<T>(data: T[], chunkSize: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < data.length; i += chunkSize) {
+    const chunk = data.slice(i, i + chunkSize);
+    result.push(chunk);
+  }
+  return result;
+}

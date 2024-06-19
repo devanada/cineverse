@@ -26,7 +26,7 @@ export default function ActionBtn(props: Props) {
 
   return (
     <form className="w-full" action={formAction}>
-      <input type="hidden" name="media_type" value="movie" />
+      <input type="hidden" name="media_type" value="tv" />
       <input type="hidden" name="media_id" value={props.inputValue} />
       <Button className="w-full" variant={props.variant} type="submit">
         {props.label}
