@@ -21,7 +21,14 @@ export default async function Page({ searchParams }: Props) {
     <>
       <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {movies.results.map((movie) => (
-          <MovieCard key={movie.id} {...movie} gridDisplay />
+          <MovieCard
+            key={movie.id}
+            href={`/movies/${movie.id}`}
+            title={movie.title}
+            overview={movie.overview}
+            image={movie.poster_path}
+            gridDisplay
+          />
         ))}
       </div>
       <Pagination

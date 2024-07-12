@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { IParams, IFailed } from "@/utils/types/api";
 
-const BASE_URL = "https://api.themoviedb.org/3/";
+const BASE_URL = "https://api.themoviedb.org/3";
 
 interface RequestOptions extends RequestInit {
   query?: IParams;
@@ -28,6 +28,7 @@ async function request<TResponse>(
     }
 
     const response = await fetch(BASE_URL + urlQuery, options);
+    console.log(BASE_URL + urlQuery);
 
     if (response.ok) {
       return (await response.json()) as TResponse;
@@ -42,15 +43,21 @@ async function request<TResponse>(
 function constructQueryParams(query?: IParams) {
   const cookieStore = cookies();
   const sessionID = cookieStore.get("sessionID")?.value;
-  let result = "?";
-
-  result += new URLSearchParams({
+  const params = new URLSearchParams({
     api_key: process.env.API_KEY ?? "",
     session_id: sessionID ?? "",
-    ...query,
   });
 
-  return result;
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      // Ensure valid values before adding to URLSearchParams
+      if (value !== undefined) {
+        params.append(key, value.toString());
+      }
+    }
+  }
+
+  return `?${params.toString()}`;
 }
 
 export default {
